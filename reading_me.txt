@@ -1,0 +1,94 @@
+#docker images
+homeassistant/raspberrypi3-homeassistant   0.94.3              ab997ae778c8        21 months ago       883MB
+homeassistant/raspberrypi3-homeassistant   latest              ab997ae778c8        21 months ago       883MB
+homeassistant/aarch64-hassio-supervisor    166                 7b5ee52911b3        21 months ago       210MB
+homeassistant/aarch64-hassio-supervisor    latest              7b5ee52911b3        21 months ago       210MB
+homeassistant/armv7-addon-mosquitto        4.3                 c412a4d3f8fe        21 months ago       17.8MB
+homeassistant/armv7-addon-mosquitto        latest              c412a4d3f8fe        21 months ago       17.8MB
+homeassistant/armv7-addon-configurator     3.4                 50a55b087404        21 months ago       123MB
+homeassistant/armv7-addon-configurator     latest              50a55b087404        21 months ago       123MB
+homeassistant/armv7-addon-samba            8.1                 717115476b9f        2 years ago         36.8MB
+homeassistant/armv7-addon-samba            latest              717115476b9f        2 years ago         36.8MB
+
+
+#free
+              total        used        free      shared  buff/cache   available
+Mem:        1849584      383596      903072       15376      562916     1360500
+Swap:        924788       65024      859764
+
+#docker ps
+5e61f274970f        homeassistant/armv7-addon-mosquitto        "/run.sh"                11 hours ago        Up 11 hours         0.0.0.0:1883-1884->1883-1884/tcp, 0.0.0.0:8883-8884->8883-8884/tcp   addon_core_mosquitto
+08b4fc84efd3        homeassistant/armv7-addon-configurator     "/run.sh"                11 hours ago        Up 11 hours                                                                              addon_core_configurator
+6cb1592c48a8        homeassistant/raspberrypi3-homeassistant   "/bin/entry.sh pytho…"   21 months ago       Up 10 hours                                                                              homeassistant
+966f8005735a        homeassistant/aarch64-hassio-supervisor    "python3 -m hassio"      21 months ago       Up 12 hours                                                                              hassio_supervisor
+
+
+#docker ps -a
+5e61f274970f        homeassistant/armv7-addon-mosquitto        "/run.sh"                11 hours ago        Up 11 hours         0.0.0.0:1883-1884->1883-1884/tcp, 0.0.0.0:8883-8884->8883-8884/tcp   addon_core_mosquitto
+08b4fc84efd3        homeassistant/armv7-addon-configurator     "/run.sh"                12 hours ago        Up 12 hours                                                                              addon_core_configurator
+6cb1592c48a8        homeassistant/raspberrypi3-homeassistant   "/bin/entry.sh pytho…"   21 months ago       Up 10 hours                                                                              homeassistant
+966f8005735a        homeassistant/aarch64-hassio-supervisor    "python3 -m hassio"      21 months ago       Up 12 hours                                                                              hassio_supervisor
+
+#sao luu tất ca images dang co
+docker save $(docker images -q) -o /root/homeassistant_17_03_2021.tar
+
+#load images da backup
+docker load -i /root/homeassistant_17_03_2021.tar
+
+#docker restart all conten
+docker restart $(docker ps -a -q)
+
+sudo docker stop homeassistant
+sudo docker rm homeassistant
+docker pull homeassistant/home-assistant:stable
+
+root@aml:~# docker images
+REPOSITORY                                 TAG       IMAGE ID       CREATED         SIZE
+homeassistant/home-assistant               stable    78e5abefca22   5 days ago      1.1GB
+homeassistant/raspberrypi3-homeassistant   0.94.3    ab997ae778c8   21 months ago   883MB
+homeassistant/raspberrypi3-homeassistant   latest    ab997ae778c8   21 months ago   883MB
+homeassistant/aarch64-hassio-supervisor    166       7b5ee52911b3   21 months ago   210MB
+homeassistant/aarch64-hassio-supervisor    latest    7b5ee52911b3   21 months ago   210MB
+homeassistant/armv7-addon-mosquitto        4.3       c412a4d3f8fe   21 months ago   17.8MB
+homeassistant/armv7-addon-mosquitto        latest    c412a4d3f8fe   21 months ago   17.8MB
+homeassistant/armv7-addon-configurator     3.4       50a55b087404   21 months ago   123MB
+homeassistant/armv7-addon-configurator     latest    50a55b087404   21 months ago   123MB
+
+
+# finally, start a new one
+docker run --init -d \
+  --name homeassistant \
+  --restart=unless-stopped \
+  -v /home/docker/home-assistant:/config \
+  -v /etc/localtime:/etc/localtime:ro \
+  --network=host \
+  homeassistant/home-assistant:stable
+
+
+
+
+
+root@aml:~# docker run --init -d \
+>   --name homeassistant \
+>   --restart=unless-stopped \
+>   -v /home/docker/home-assistant:/config \
+>   -v /etc/localtime:/etc/localtime:ro \
+>   homeassistant/home-assistant:stable
+
+
+-->d935f580864e7654571e3bb80bf951c88f23feaddc3dadb03a0a11b2d4dfcea8
+
+
+
+
+
+
+
+
+
+
+Welcome to ARMBIAN 5.88 user-built Ubuntu 18.04.2 LTS 5.1.0-aml-s905
+System load:   0.24 0.13 0.10   Up time:       1 day
+Memory usage:  22 % of 1806MB   Zram usage:    10 % of 903Mb    IP:            192.168.1.10
+CPU temp:      54°C
+Usage of /:    22% of 14G
